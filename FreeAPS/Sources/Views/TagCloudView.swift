@@ -52,16 +52,6 @@ struct TagCloudView: View {
     private func item(for textTag: String) -> some View {
         var colorOfTag: Color {
             switch textTag {
-            case textTag where textTag.contains("Not Floating"):
-                return .loopYellow
-            case textTag where textTag.contains("Floating Carbs"):
-                return .loopPink
-            case textTag where textTag.contains("autoISF"):
-                return .zt
-            case textTag where textTag.contains("SMB Delivery Ratio"):
-                return .uam
-            case textTag where textTag.contains("Parabolic Fit"):
-                return .loopRed
             case textTag where textTag.contains("TDD"),
                  textTag where textTag.contains("Formula"),
                  textTag where textTag.contains("AF"),
