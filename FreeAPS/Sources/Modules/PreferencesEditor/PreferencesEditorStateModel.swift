@@ -91,6 +91,45 @@ extension PreferencesEditor {
 
             // MARK: - SMB fields
 
+            let dynamicISF = [
+                Field(
+                    displayName: "Adjustment Factor",
+                    type: .decimal(keypath: \.adjustmentFactor),
+                    infoText: NSLocalizedString(
+                        "Adjust Dynamic ISF constant",
+                        comment: "Adjust Dynamic ISF constant"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Enable Dynamic ISF",
+                    type: .boolean(keypath: \.enableChris),
+                    infoText: NSLocalizedString(
+                        "Enable Dynamic ISF",
+                        comment: "Enable Dynamic ISF"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Enable Dynamic CR",
+                    type: .boolean(keypath: \.enableDynamicCR),
+                    infoText: NSLocalizedString(
+                        "Use Dynamic CR together with Dynamic ISF",
+                        comment: "Use Dynamic CR together with Dynamic ISF"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Use logarithmic formula",
+                    type: .boolean(keypath: \.useNewFormula),
+                    infoText: NSLocalizedString(
+                        "Use logarithmic formula",
+                        comment: "Use logarithmic formula"
+                    ),
+                    settable: self
+                )
+            ]
+
             let smbFields = [
                 Field(
                     displayName: "Enable SMB Always",
@@ -98,6 +137,15 @@ extension PreferencesEditor {
                     infoText: NSLocalizedString(
                         "Defaults to false. When true, always enable supermicrobolus (unless disabled by high temptarget).",
                         comment: "Enable SMB Always"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Max Delta-BG Threshold SMB",
+                    type: .decimal(keypath: \.maxDeltaBGthreshold),
+                    infoText: NSLocalizedString(
+                        "Defaults to 0.2 (20%). Maximum positiv %change of BG level to use SMB, above that will disable SMB. Hardcoded cap of 40%. For UAM fully-closed-loop 30% is advisable. Observe in log and popup (maxDelta 27 > 20% of BG 100 - disabling SMB!).",
+                        comment: "Max Delta-BG Threshold"
                     ),
                     settable: self
                 ),
@@ -173,7 +221,10 @@ extension PreferencesEditor {
                 Field(
                     displayName: "Bolus Increment",
                     type: .decimal(keypath: \.bolusIncrement),
-                    infoText: NSLocalizedString("Smallest SMB / SMB increment in oref0. Minimum amount for Medtronic pumps is 0.1 U, whereas for Omnipod it’s 0.05 U. The default value is 0.1.", comment: "Bolus Increment"),
+                    infoText: NSLocalizedString(
+                        "Smallest SMB / SMB increment in oref0. Minimum amount for Medtronic pumps is 0.1 U, whereas for Omnipod it’s 0.05 U. The default value is 0.1.",
+                        comment: "Bolus Increment"
+                    ),
                     settable: self
                 )
             ]
@@ -379,6 +430,10 @@ extension PreferencesEditor {
             sections = [
                 FieldSection(
                     displayName: NSLocalizedString("OpenAPS main settings", comment: "OpenAPS main settings"), fields: mainFields
+                ),
+                FieldSection(
+                    displayName: NSLocalizedString("Dynamic settings", comment: "Dynamic settings"),
+                    fields: dynamicISF
                 ),
                 FieldSection(
                     displayName: NSLocalizedString("OpenAPS SMB settings", comment: "OpenAPS SMB settings"), fields: smbFields
