@@ -47,6 +47,7 @@ extension Suggestion {
         case reservoir
         case timestamp
         case recieved
+        case isf = "ISF"
         case tdd
     }
 }

@@ -54,8 +54,9 @@ struct TagCloudView: View {
             switch textTag {
                  textTag where textTag.contains("formula."),
             case textTag where textTag.contains("TDD:"),
+                 textTag where textTag.contains("Formula:"),
                  textTag where textTag.contains("AF:"),
-                 textTag where textTag.contains("Dynamic "):
+                 textTag where textTag.contains("Dynamic ISF/CR"):
                 return .zt
             default:
                 return .insulin
