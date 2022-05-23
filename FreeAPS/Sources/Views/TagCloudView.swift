@@ -52,11 +52,11 @@ struct TagCloudView: View {
     private func item(for textTag: String) -> some View {
         var colorOfTag: Color {
             switch textTag {
-                 textTag where textTag.contains("formula."),
             case textTag where textTag.contains("TDD:"),
-                 textTag where textTag.contains("Formula:"),
                  textTag where textTag.contains("AF:"),
-                 textTag where textTag.contains("Dynamic ISF/CR"):
+                 textTag where textTag.contains("Dynamic ISF/CR"),
+                 textTag where textTag.contains("Original formula"),
+                 textTag where textTag.contains("Logarithmic formula"):
                 return .zt
             default:
                 return .insulin
