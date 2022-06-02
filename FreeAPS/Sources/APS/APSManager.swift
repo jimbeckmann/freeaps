@@ -589,12 +589,24 @@ final class BaseAPSManager: APSManager, Injectable {
 
             storage.save(enacted, as: OpenAPS.Enact.enacted)
 
+            // Add to tdd.json
+            let file = OpenAPS.Monitor.tdd
+            
             let tdd = TDD(
                 TDD: enacted.tdd ?? 0,
-                timestamp: Date()
+                timestamp: Date(),
+                id: UUID().uuidString
             )
 
-            storage.save(tdd, as: OpenAPS.Monitor.tdd)
+            var uniqEvents: [TDD] = []
+            storage.transaction { storage in
+                storage.append(tdd, to: file, uniqBy: \.id)
+                uniqEvents = storage.retrieve(file, as: [TDD].self)?
+                    .filter { $0.timestamp.addingTimeInterval(7.days.timeInterval) > Date() }
+                    .sorted { $0.timestamp > $1.timestamp } ?? []
+                storage.save(Array(uniqEvents), as: file)
+            }
+
 
             debug(.apsManager, "Suggestion enacted. Received: \(received)")
             DispatchQueue.main.async {
