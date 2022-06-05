@@ -93,19 +93,10 @@ extension PreferencesEditor {
 
             let dynamicISF = [
                 Field(
-                    displayName: "Adjustment Factor",
-                    type: .decimal(keypath: \.adjustmentFactor),
-                    infoText: NSLocalizedString(
-                        "Adjust Dynamic ISF constant",
-                        comment: "Adjust Dynamic ISF constant"
-                    ),
-                    settable: self
-                ),
-                Field(
                     displayName: "Enable Dynamic ISF",
                     type: .boolean(keypath: \.enableChris),
                     infoText: NSLocalizedString(
-                        "Enable Dynamic ISF",
+                        "Change ISF with every loop cycle. New ISF will be based on current BG, TDD if insulin (past 24 hours or a weighted average) and an Adjustment Factor (default is 1). Dynamic ISF and CR ratios will be limited by your autosens.min/max limits. Dynamic ratio replaces the autosens.ratio: New ISF = Static ISF / Dynamic ratio",
                         comment: "Enable Dynamic ISF"
                     ),
                     settable: self
@@ -114,17 +105,26 @@ extension PreferencesEditor {
                     displayName: "Enable Dynamic CR",
                     type: .boolean(keypath: \.enableDynamicCR),
                     infoText: NSLocalizedString(
-                        "Use Dynamic CR together with Dynamic ISF",
+                        "Use Dynamic CR. The dynamic ratio will be used also for CR: New CR = CR / Dynamic ratio. When using toghether with a high Insulin Fraction (>2), the recommended bolus for meals could get too high.",
                         comment: "Use Dynamic CR together with Dynamic ISF"
                     ),
                     settable: self
                 ),
                 Field(
-                    displayName: "Use logarithmic formula",
+                    displayName: "Adjustment Factor",
+                    type: .decimal(keypath: \.adjustmentFactor),
+                    infoText: NSLocalizedString(
+                        "Adjust Dynamic ratios by a constant. Default is 1. Higher than 1 => lower ISF",
+                        comment: "Adjust Dynamic ISF constant"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "Use Logarithmic Formula",
                     type: .boolean(keypath: \.useNewFormula),
                     infoText: NSLocalizedString(
-                        "Use logarithmic formula",
-                        comment: "Use logarithmic formula"
+                        "New Logarithmic Formula. More aggressive at lower and normal BG and less aggressive at really high BG. Use a lower AF (compared to Original Formula) when using the Logaritmic Formula. ",
+                        comment: "Use Logarithmic Formula"
                     ),
                     settable: self
                 )
@@ -209,6 +209,15 @@ extension PreferencesEditor {
                     infoText: NSLocalizedString(
                         "Defaults to start at 30. This is the maximum minutes of basal that can be delivered by UAM as a single SMB when IOB exceeds COB. This gives the ability to make UAM more or less aggressive if you choose. It is recommended that the value is set to start at 30, in line with the default, and if you choose to increase this value, do so in no more than 15 minute increments, keeping a close eye on the effects of the changes. Reducing the value will cause UAM to dose less insulin for each SMB. It is not recommended to set this value higher than 60 mins, as this may affect the ability for the algorithm to safely zero temp. It is also recommended that pushover is used when setting the value to be greater than default, so that alerts are generated for any predicted lows or highs.",
                         comment: "Max UAM SMB Basal Minutes"
+                    ),
+                    settable: self
+                ),
+                Field(
+                    displayName: "SMB DeliveryRatio",
+                    type: .decimal(keypath: \.smbDeliveryRatio),
+                    infoText: NSLocalizedString(
+                        "Default value: 0.5 This is another key OpenAPS safety cap, and specifies what share of the total insulin required can be delivered as SMB. Increase this experimental value slowly and with caution.",
+                        comment: "SMB DeliveryRatio"
                     ),
                     settable: self
                 ),

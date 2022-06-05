@@ -38,6 +38,16 @@ function generate(iob, currenttemp, glucose, profile, autosens = null, meal = nu
         basalprofile = basalProfile;
     }
     
+    var tdd_ = {};
+    if (tdd) {
+        tdd_ = tdd;
+    }
     
-    return freeaps_determineBasal(glucose_status, currenttemp, iob, profile, autosens_data, meal_data, freeaps_basalSetTemp, microbolusAllowed, reservoir_data, clock, pumphistory, preferences, basalprofile);
+    var tdd_averages_ = {};
+    if (tdd_averages) {
+        tdd_averages_ = tdd_averages;
+    }
+    
+    
+    return freeaps_determineBasal(glucose_status, currenttemp, iob, profile, autosens_data, meal_data, freeaps_basalSetTemp, microbolusAllowed, reservoir_data, clock, pumphistory, preferences, basalprofile, tdd_, tdd_averages_);
 }
